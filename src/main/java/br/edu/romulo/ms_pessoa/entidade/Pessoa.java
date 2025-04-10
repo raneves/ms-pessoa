@@ -1,6 +1,7 @@
 package br.edu.romulo.ms_pessoa.entidade;
 
 
+import br.edu.romulo.ms_pessoa.dto.DadosAtualizacaoPessoaDTO;
 import br.edu.romulo.ms_pessoa.dto.DadosCadastroPessoaDTO;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -25,12 +26,8 @@ public class Pessoa {
     private String nome;
     private String email;    
     private String telefone;
-
-    
-
     @Embedded
-    private Endereco endereco;
-    
+    private Endereco endereco;    
     private Boolean ativo;
     
     public Pessoa(DadosCadastroPessoaDTO dados) {
@@ -39,5 +36,25 @@ public class Pessoa {
         this.email = dados.email();
         this.telefone = dados.telefone();        
         this.endereco = new Endereco(dados.endereco());
+    }
+    
+    public void excluir() {
+        this.ativo = false;
+    }
+    
+    public void atualizarInformacoes(DadosAtualizacaoPessoaDTO dados) {
+        if (dados.nome() != null) {
+            this.nome = dados.nome();
+        }
+        if (dados.telefone() != null) {
+            this.telefone = dados.telefone();
+        }
+        if(dados.email() != null) {
+        	this.email = dados.email();
+        }
+        if (dados.endereco() != null) {
+            this.endereco.atualizarInformacoes(dados.endereco());
+        }
+
     }
 }
